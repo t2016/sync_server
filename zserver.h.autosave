@@ -1,0 +1,33 @@
+#ifndef ZSERVER_H
+#define ZSERVER_H
+
+
+#include <QObject>
+#include <QTcpServer>
+#include <QTcpSocket>
+#include <QDebug>
+#include <QByteArray>
+#include <QDataStream>
+
+class ZServer : public QObject
+
+{
+
+    Q_OBJECT
+
+public:
+    explicit ZServer(QObject *parent = 0); // конструктор
+
+signals:
+public slots:
+    void incommingConnection(); // обработчик входящего подключения
+    void readyRead(); // обработчик входящих данных
+    void stateChanged(QAbstractSocket::SocketState stat); // обработчик изменения состояния вещающего сокета (он нам важен, дабы у нас всегда был кто-то, кто будет вещать
+
+private:
+    QTcpServer *server; // указатель на сервер
+    QList<QTcpSocket *> sockets; // получатели данных
+    QTcpSocket *firstSocket; // вещатель
+};
+
+#endif // ZSERVER_H
